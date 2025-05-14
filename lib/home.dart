@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/slide_provider.dart';
 
 // final hello = StateProvider<int>((ref){
 //   return 0;
@@ -15,11 +16,35 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
 
-    print('countigngngn');
+    // print('countigngngn');
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Riverpod'),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Consumer(builder: (context,ref,child){
+            final sliderD = ref.watch(sliderProvider);
+            return Center(
+              child: Container(
+                height: 200,
+                width: 200,
+                color: Colors.redAccent.withOpacity(sliderD),
+              ),
+            );
+          }),
+
+          Consumer(builder: (context,ref,child){
+            final sliderD = ref.watch(sliderProvider);
+            return Slider(value: sliderD, onChanged: (value){
+              ref.read(sliderProvider.notifier).state=value;
+            });
+          })
+
           // Consumer(builder: (context,ref,child){
           //   print("contsessss");
           //   final counter = ref.watch(hello);
@@ -34,18 +59,18 @@ class Home extends ConsumerWidget {
           //   });
           // }),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // ElevatedButton(onPressed: (){
-              //   ref.read(hello.notifier).state++;
-              // }, child: Icon(Icons.add)),
-              // SizedBox(width: 10,),
-              // ElevatedButton(onPressed: (){
-              //   ref.read(hello.notifier).state--;
-              // }, child: Icon(Icons.minimize)),
-            ],
-          )
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     // ElevatedButton(onPressed: (){
+          //     //   ref.read(hello.notifier).state++;
+          //     // }, child: Icon(Icons.add)),
+          //     // SizedBox(width: 10,),
+          //     // ElevatedButton(onPressed: (){
+          //     //   ref.read(hello.notifier).state--;
+          //     // }, child: Icon(Icons.minimize)),
+          //   ],
+          // )
         ],
       ),
     );
