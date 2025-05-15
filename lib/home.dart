@@ -28,7 +28,23 @@ class Home extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Consumer(builder: (context,ref,child){
-            final sliderD = ref.watch(sliderProvider);
+            final sliderD = ref.watch(sliderProvider.select((state)=>state.showPassword));
+            return Center(
+              child: InkWell(
+                onTap: (){
+                  final slideProvider = ref.read(sliderProvider.notifier);
+                  slideProvider.state=slideProvider.state.copyWith(showPassword: !sliderD);
+                },
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  child: sliderD?Icon(Icons.visibility):Icon(Icons.visibility_off)
+                ),
+              ),
+            );
+          }),
+          Consumer(builder: (context,ref,child){
+            final sliderD = ref.watch(sliderProvider.select((state)=>state.slider));
             return Center(
               child: Container(
                 height: 200,
@@ -39,9 +55,10 @@ class Home extends ConsumerWidget {
           }),
 
           Consumer(builder: (context,ref,child){
-            final sliderD = ref.watch(sliderProvider);
+            final sliderD = ref.watch(sliderProvider.select((state)=>state.slider));
             return Slider(value: sliderD, onChanged: (value){
-              ref.read(sliderProvider.notifier).state=value;
+              final stateProvider = ref.read(sliderProvider.notifier);
+              stateProvider.state=stateProvider.state.copyWith(slider: value);
             });
           })
 
