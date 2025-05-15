@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/search_provider.dart';
 import 'package:riverpod_practice/slide_provider.dart';
 
 // final hello = StateProvider<int>((ref){
@@ -28,6 +29,24 @@ class Home extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Consumer(builder: (context,ref,child){
+            print('change');
+            final searchP = ref.watch((searchProvider).select((state)=>state.isChange));
+            return Switch(value:searchP , onChanged: (value){
+              ref.read(searchProvider.notifier).isChange(value);
+            });
+          }),
+          TextField(
+            onChanged: (value){
+              ref.read(searchProvider.notifier).search(value);
+            },
+          ),
+          Consumer(builder: (context,ref,child){
+            print('search');
+            final searchP = ref.watch((searchProvider).select((state)=>state.search));
+            return Text(searchP);
+          }),
+          Consumer(builder: (context,ref,child){
+            print('vidlslel');
             final sliderD = ref.watch(sliderProvider.select((state)=>state.showPassword));
             return Center(
               child: InkWell(
