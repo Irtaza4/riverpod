@@ -14,7 +14,7 @@ class ItemNotifier extends StateNotifier<List<Item>>{
     state = state.toList();
   }
   void deleteItem(String id){
-    state.removeWhere((item)=>item.id==id);
+    state.removeWhere((item)=>item.id== id);
     state = state.toList();
   }
   void updateItem(String id , String name){
