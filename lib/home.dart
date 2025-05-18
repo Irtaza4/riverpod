@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_practice/favourite_provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final favPro= ref.watch(favouriteProvider);
     return  Scaffold(
       appBar: AppBar(
         title: Text('Favourite App',style: TextStyle(
@@ -13,7 +16,52 @@ class Home extends StatelessWidget {
           fontSize: 25
         ),),
         centerTitle: true,
+        actions: [
+          PopupMenuButton(
+              onSelected: (value){
+                ref.read(favouriteProvider.notifier).favouriteList(value);
+              },
+              itemBuilder: (BuildContext context){
+            return const [
+
+              PopupMenuItem(
+                  value: 'All',
+                  child: Text('All')),
+              PopupMenuItem(
+                  value: 'Favourite',
+                  child: Text('Favourite')),
+            ];
+          })
+        ],
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        ref.read(favouriteProvider.notifier).addItem();
+      },child: Icon(Icons.add),),
+      body:Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Search'
+            ),
+            onChanged: (value){
+            ref.read(favouriteProvider.notifier).filterList(value);
+            },
+          ),
+          Expanded(
+              child:
+              ListView.builder(
+                  itemCount: favPro.filteredItems.length,
+                  itemBuilder: (context,index){
+                   final item = favPro.filteredItems[index];
+                    return ListTile(
+                      title: Text(item.name),
+                      trailing: Icon(item.favourite? Icons.favorite:Icons.favorite_outline_rounded),
+                    );
+
+          }))
+        ],
+      )
     );
   }
 }

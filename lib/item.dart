@@ -1,12 +1,12 @@
 class Item{
   final String name;
-  final String id;
+  final int id;
   final bool favourite;
   Item({required this.name,required this.id,required this.favourite});
 
   Item copyWith({
     String? name,
-    String? id,
+    int? id,
     bool? favourite,
 }) {
     return Item(
