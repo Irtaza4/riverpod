@@ -32,13 +32,6 @@ class FavouriteNotifier extends StateNotifier<FavouriteStates>{
     }
     return items.where((item)=>item.favourite==true).toList();
   }
-
-
-
-
-
-
-
   List<Item> _filteritems(List<Item> items, String search){
     if(search.isEmpty){
       return items;
